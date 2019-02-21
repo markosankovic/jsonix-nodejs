@@ -6143,11 +6143,22 @@ if (typeof require === 'function') {
 	// ... but the define function does not exists
 	if (typeof define !== 'function') {
 		if (!process.browser) {
-			// Load the define function via amdefine
-			var define = require('amdefine')(module);
+			try {
+				// Load the define function via amdefine
+				var define = require('amdefine')(module);
 
-			// Require xmldom, xmlhttprequest and fs
-			define(["xmldom", "xmlhttprequest", "fs"], _jsonix_factory);
+				// Require xmldom, xmlhttprequest and fs
+				define(["xmldom", "xmlhttprequest", "fs"], _jsonix_factory);
+			} catch (e) {
+				if (typeof exports === "object")
+				{
+					module.exports = _jsonix_factory();
+				}
+				else
+				{
+					var Jsonix = _jsonix_factory().Jsonix;
+				}
+			}
 		}
 		else
 		{
